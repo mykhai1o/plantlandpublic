@@ -3494,9 +3494,6 @@
         html.classList.add("loaded");
         window.addEventListener("storage", () => { });
         tabsChange();
-
-        const form = document.querySelector(".popup-form")
-        form.addEventListener("submit", sendFormData())
     }
     function documentActions(e) {
         const type = e.type;
@@ -3588,7 +3585,7 @@
                 renderCard();
                 itemsInCart();
             }
-            // if (targetElement.closest(".popup-form__button")) sendFormData();
+            if (targetElement.closest(".popup-form__button")) sendFormData();
         }
     }
     function renderCard() {
