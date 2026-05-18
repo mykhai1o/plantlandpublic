@@ -3665,7 +3665,7 @@
                         const formResponse = `${status}`;
                         popupSuccessContent.insertAdjacentHTML("afterbegin", formResponse);
                     } catch (error) {
-                        downCartContent.innerHTML = "<p>Connection error!</p>";
+                        popupSuccessContent.innerHTML = "<p>Connection error!</p>";
                     }
                 };
                 sendData();
