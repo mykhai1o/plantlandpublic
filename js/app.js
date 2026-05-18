@@ -3444,6 +3444,15 @@
             });
         }
     }, 0);
+
+
+    // =======================================================================
+    // =======================================================================
+    // =======================================================================
+    // =======================================================================
+
+
+
     const products = [{
         id: "plant-1",
         name: "Floral Moss",
@@ -3545,10 +3554,17 @@
                 renderCard();
             }
             if (targetElement.closest(".body-popup__close")) {
-                const targetPopup = targetElement.closest(".popup-cart");
-                targetPopup.classList.remove("popup-cart--open");
-                html.classList.remove("lock");
-                itemsInCart();
+                if (targetElement.closest(".popup-cart")) {
+                    const targetPopup = targetElement.closest(".popup-cart");
+                    targetPopup.classList.remove("popup-cart--open");
+                    html.classList.remove("lock");
+                    itemsInCart();
+                } else if (targetElement.closest(".info-popup")) {
+                    const targetPopup = targetElement.closest(".info-popup");
+                    targetPopup.classList.remove("info-popup--open");
+                    html.classList.remove("lock");
+                }
+
             }
             if (targetElement.closest(".item-product__delete")) {
                 const cartItemId = targetElement.closest(".item-product").id;
@@ -3619,6 +3635,45 @@
                     }
                 };
                 sendData();
+            }
+            if (targetElement.closest("#plant-store__form")) {
+                e.preventDefault()
+                const form = targetElement.closest("#plant-store__form");
+
+                const popupSuccess = document.querySelector(".info-popup");
+                const popupSuccessContent = popupSuccess.querySelector(".content-popup__text")
+
+                const formData = new FormData(form);
+                const sendData = async () => {
+                    try {
+                        const response = await fetch("https://formspree.io/f/mzdazveg", {
+                            method: "POST",
+                            body: formData,
+                            headers: {
+                                Accept: "application/json"
+                            }
+                        });
+                        popupSuccessContent.innerHTML = "";
+                        let status = "";
+                        if (response.ok) {
+                            status = "Thank you! We received your request!";
+                            form.reset();
+                        } else {
+                            await response.json();
+                            status = `Oops.. Something went wrong!\n\t\t\t\t\t<br> Try later!`;
+                        }
+                        const formResponse = `${status}`;
+                        popupSuccessContent.insertAdjacentHTML("afterbegin", formResponse);
+                    } catch (error) {
+                        downCartContent.innerHTML = "<p>Connection error!</p>";
+                    }
+                };
+                sendData();
+                html.classList.add("lock");
+                const targetPopup = document.querySelector(".info-popup");
+                targetPopup.classList.add("info-popup--open");
+
+
             }
         }
     }
@@ -3697,40 +3752,42 @@
             target.classList.add("active");
         });
     }
-    function sendFormData() {
-        const form = document.querySelector(".popup-form");
-        const downCartContent = document.querySelector(".body-popup__down");
-        async function handleSubmit(event) {
-            event.preventDefault();
-            const data = new FormData(event.target);
-            try {
-                const response = await fetch("https://formspree.io/f/mzdazveg", {
-                    method: "POST",
-                    body: data,
-                    headers: {
-                        Accept: "application/json"
-                    }
-                });
-                downCartContent.innerHTML = "";
-                let status = "";
-                if (response.ok) {
-                    status = "Thank you for your order!";
-                    form.reset();
-                    localStorage.setItem("cart", JSON.stringify([]));
-                    cart = [];
-                    itemsInCart();
-                } else {
-                    await response.json();
-                    status = `Oops.. Something went wrong!\n\t\t\t\t\t<br> Try later!`;
-                }
-                const formResponse = `\n\t\t\t\t<div class="content-popup__title-empty">${status}</div>\n\t\t\t\t`;
-                downCartContent.insertAdjacentHTML("afterbegin", formResponse);
-            } catch (error) {
-                downCartContent.innerHTML = "<p>Connection error!</p>";
-            }
-        }
-        form.addEventListener("submit", handleSubmit);
-    }
+    // function sendFormData() {
+    //     const form = document.querySelector(".popup-form");
+    //     const downCartContent = document.querySelector(".body-popup__down");
+    //     async function handleSubmit(event) {
+    //         event.preventDefault();
+    //         const data = new FormData(event.target);
+    //         try {
+    //             const response = await fetch("https://formspree.io/f/mzdazveg", {
+    //                 method: "POST",
+    //                 body: data,
+    //                 headers: {
+    //                     Accept: "application/json"
+    //                 }
+    //             });
+    //             downCartContent.innerHTML = "";
+    //             let status = "";
+    //             if (response.ok) {
+    //                 status = "Thank you for your order!";
+    //                 form.reset();
+    //                 localStorage.setItem("cart", JSON.stringify([]));
+    //                 cart = [];
+    //                 itemsInCart();
+    //             } else {
+    //                 await response.json();
+    //                 status = `Oops.. Something went wrong!\n\t\t\t\t\t<br> Try later!`;
+    //             }
+    //             const formResponse = `\n\t\t\t\t<div class="content-popup__title-empty">${status}</div>\n\t\t\t\t`;
+    //             downCartContent.insertAdjacentHTML("afterbegin", formResponse);
+    //         } catch (error) {
+    //             downCartContent.innerHTML = "<p>Connection error!</p>";
+    //         }
+    //     }
+    //     form.addEventListener("submit", handleSubmit);
+    // }
+
+
     let app_slideUp = (target, duration = 500, showmore = 0) => {
         if (!target.classList.contains("_slide")) {
             target.classList.add("_slide");

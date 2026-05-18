@@ -1402,7 +1402,7 @@ html {
   padding-block: .75rem;
   aspect-ratio: auto
 }
-.popup-cart {
+.popup-cart, .info-popup {
   background-color: rgba(105,104,104,.806);
   position: fixed;
   inline-size: 100%;
@@ -1418,17 +1418,17 @@ html {
   gap: 1.25rem;
   overflow: auto
 }
-.popup-cart--open {
+.popup-cart--open, .info-popup--open {
   display: flex
 }
-.popup-cart__wrapper {
+.popup-cart__wrapper, .info-popup__wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   inline-size: 100%
 }
-.popup-cart__body {
+.popup-cart__body, .info-popup__body {
   background-color: #fff;
   border-radius: .3125rem;
   max-inline-size: 35.625rem;
@@ -1660,6 +1660,13 @@ html {
   justify-content: center;
   align-items: center
 }
+.info-popup__down {
+  border-top: 0.1rem solid #0e370322;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+
 .swiper {
   overflow: hidden
 }
